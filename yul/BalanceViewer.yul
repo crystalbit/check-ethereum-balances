@@ -19,15 +19,14 @@ object "BalanceViewer" {
           let returnal := 0
 
           let end := add(arrayPos, shl(5, length))
-          let i := arrayPos
           for { } 1 { } {
-            if iszero(iszero(balance(calldataload(i))))
+            if iszero(iszero(balance(calldataload(arrayPos))))
             {
               returnal := 1
               break
             }
-            i := add(i, 0x20)
-            if iszero(lt(i, end)) { break }
+            arrayPos := add(arrayPos, 0x20)
+            if iszero(lt(arrayPos, end)) { break }
           }
           let memPos := mload(64)
           let memEnd := add(memPos, 32)
