@@ -9,22 +9,20 @@ object "BalanceViewer" {
 
       let offset := add(4, calldataload(4))
       let arrayPos := add(offset, 0x20)
-      let memPos := mload(0x40)
 
       let end := add(arrayPos, shl(5, calldataload(offset)))
       for { } 1 { } {
         if iszero(iszero(balance(calldataload(arrayPos))))
         {
-          mstore(memPos, 1)
-          return(memPos, 0x20)
+          mstore(0x80, 1)
+          return(0x80, 0x20)
         }
         arrayPos := add(arrayPos, 0x20)
         if iszero(lt(arrayPos, end)) { break }
       }
-
-      return(memPos, 0x20)
+      return(0x60, 0x20)
     }
   }
 }
 
-// 603c600d600039603c6000f3fe60043560040160208101604051823560051b82015b60011560375782353115602a5760018252602082f35b6020830192508083106014575b602082f3
+// 603c600d600039603c6000f3fe60043560040160208101813560051b81015b60011560365781353115602957600160805260206080f35b6020820191508082106011575b60206060f3

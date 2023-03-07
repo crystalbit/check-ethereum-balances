@@ -5,3 +5,6 @@ To test both versions:
 
 Compile yul version:  
 `solc --strict-assembly yul/BalanceViewer.yul`  
+
+Gas report:  
+`forge snapshot --ffi && cat .gas-snapshot`  

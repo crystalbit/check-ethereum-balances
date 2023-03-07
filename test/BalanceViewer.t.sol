@@ -25,6 +25,10 @@ contract BalanceViewerTest is Test {
         assertEq(balanceViewer.detectBalance(addresses), 1);
     }
 
+    function testGasSnapshot() external view {
+        yulBalanceViewer.detectBalance(new address[](3));
+    }
+
     function testYul() public {
         address[] memory addresses = new address[](3);
         addresses[0] = address(3);

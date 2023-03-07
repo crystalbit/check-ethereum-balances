@@ -1,0 +1,3 @@
+BalanceViewerTest:testGasSnapshot() (gas: 8799)
+BalanceViewerTest:testSolidity() (gas: 11728)
+BalanceViewerTest:testYul() (gas: 11082)
