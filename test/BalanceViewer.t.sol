@@ -32,14 +32,14 @@ contract BalanceViewerTest is Test {
 
     function testYul() public {
         address[] memory addresses = new address[](3);
-        addresses[0] = address(3);
-        addresses[1] = address(4);
-        addresses[2] = address(5);
-        (bool success, bytes memory result) = yulBalanceViewer.staticcall(abi.encode(addresses));
+        address address0 = address(3);
+        address address1 = address(4);
+        address address2 = address(5);
+        (bool success, bytes memory result) = yulBalanceViewer.staticcall(abi.encode(address0, address1, address2, address(0)));
         assertEq(uint256(bytes32(result)), 0);
         assertTrue(success);
-        vm.deal(address(5), 1 ether);
-        (success, result) = yulBalanceViewer.staticcall(abi.encode(addresses));
+        vm.deal(address(3), 1 ether);
+        (success, result) = yulBalanceViewer.staticcall(abi.encode(address0, address1, address2, address(0)));
         assertEq(uint256(bytes32(result)), 1);
         assertTrue(success);
     }
