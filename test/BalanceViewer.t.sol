@@ -26,9 +26,9 @@ contract BalanceViewerTest is Test {
         assertEq(balanceViewer.detectBalance(addresses), 1);
     }
 
-    // function testGasSnapshot() external view {
-    //     yulBalanceViewer.detectBalance(new address[](3));
-    // }
+    function testGasSnapshot() external view {
+        yulBalanceViewer.staticcall(abi.encode(address(3), address(4), address(5)));
+    }
 
     function testYul() public {
         address address0 = address(3);
@@ -37,7 +37,7 @@ contract BalanceViewerTest is Test {
         (bool success, bytes memory result) = yulBalanceViewer.staticcall(abi.encode(address0, address1, address2));
         assertEq(uint256(bytes32(result)), 0);
         assertTrue(success);
-        vm.deal(address(3), 1 ether);
+        vm.deal(address(5), 1 ether);
         (success, result) = yulBalanceViewer.staticcall(abi.encode(address0, address1, address2));
         assertEq(uint256(bytes32(result)), 1);
         assertTrue(success);
