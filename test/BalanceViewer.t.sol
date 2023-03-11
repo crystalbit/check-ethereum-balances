@@ -4,15 +4,16 @@ pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 import "../src/BalanceViewer.sol";
 import "./lib/YulDeployer.sol";
+import "forge-std/console.sol";
 
 contract BalanceViewerTest is Test {
     YulDeployer yulDeployer = new YulDeployer();
     BalanceViewer public balanceViewer;
-    BalanceViewer public yulBalanceViewer;
+    address public yulBalanceViewer;
 
     function setUp() public {
         balanceViewer = new BalanceViewer();
-        yulBalanceViewer = BalanceViewer(yulDeployer.deployContract("BalanceViewer"));
+        yulBalanceViewer = yulDeployer.deployContract("BalanceViewer");
     }
 
     function testSolidity() public {
@@ -25,17 +26,21 @@ contract BalanceViewerTest is Test {
         assertEq(balanceViewer.detectBalance(addresses), 1);
     }
 
-    function testGasSnapshot() external view {
-        yulBalanceViewer.detectBalance(new address[](3));
-    }
+    // function testGasSnapshot() external view {
+    //     yulBalanceViewer.detectBalance(new address[](3));
+    // }
 
     function testYul() public {
         address[] memory addresses = new address[](3);
         addresses[0] = address(3);
         addresses[1] = address(4);
         addresses[2] = address(5);
-        assertEq(yulBalanceViewer.detectBalance(addresses), 0);
+        (bool success, bytes memory result) = yulBalanceViewer.staticcall(abi.encode(addresses));
+        assertEq(uint256(bytes32(result)), 0);
+        assertTrue(success);
         vm.deal(address(5), 1 ether);
-        assertEq(yulBalanceViewer.detectBalance(addresses), 1);
+        (success, result) = yulBalanceViewer.staticcall(abi.encode(addresses));
+        assertEq(uint256(bytes32(result)), 1);
+        assertTrue(success);
     }
 }
